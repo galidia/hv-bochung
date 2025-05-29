@@ -1,0 +1,39 @@
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>보충 수업 확인</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}">
+    <noscript><link rel="stylesheet" href="{{ url_for('static', filename='assets/css/noscript.css') }}" /></noscript>
+  </head>
+  <body class="is-preload">
+    <section id="sidebar">
+      <div class="inner">
+        <nav>
+          <ul>
+            <li><a href="#intro">Welcome</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+    <div id="wrapper">
+      <section id="intro" class="wrapper style1 fullscreen fade-up">
+        <div class="inner">
+          <h1>보충 수업 시간표 확인</h1>
+          <form method="POST" action="/result">
+            <label for="student_id">학번 입력:</label><br />
+            <input type="text" name="student_id" id="student_id" required /><br /><br />
+            <label for="date">날짜 선택 (선택하지 않으면 오늘 기준):</label><br />
+            <input type="date" name="date" id="date" /><br /><br />
+            <ul class="actions">
+              <li><input type="submit" value="제출하기" class="primary" /></li>
+            </ul>
+          </form>
+        </div>
+      </section>
+    </div>
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+  </body>
+</html>
