@@ -41,7 +41,7 @@
 							</p>
 
 		<!-- ✅ 학번 및 날짜 입력 폼 -->
-							<form method="POST" action="/result">
+							<form method="POST" action="/">
 								<div class="fields">
 									<div class="field">
 										<label for="student_id">학번:</label>
@@ -57,6 +57,14 @@
 									<li><input type="submit" class="button primary" value="검색" /></li>
 								</ul>
 							</form>
+							{% if result %}
+								<hr>
+								<div class="result-box" style="margin-top: 20px;">
+									<h2>검색 결과</h2>
+									<p>{{ result }}</p>
+								</div>
+							{% endif %}
+
 						</div>
 					</section>
 
