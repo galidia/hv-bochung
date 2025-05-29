@@ -9,8 +9,10 @@ def index():
     result_text = None
     if request.method == "POST":
         student_id = request.form["student_id"]
-        result_text = get_timetable(student_id)
+        date = request.form["date"]
+        result_text = get_timetable(student_id, date)
     return render_template("index.html", result=result_text)
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
