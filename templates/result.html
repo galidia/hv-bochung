@@ -1,18 +1,9 @@
-
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>결과</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}">
-</head>
+<head><title>결과</title></head>
 <body>
-  <div class="inner">
-    <h1>결과</h1>
-    <p>학번: {{ student_id }}</p>
-    <p>날짜: {{ date }}</p>
-    <p>결과 내용:</p>
-    <pre>{{ result }}</pre>
-  </div>
+    <h2>조회 결과</h2>
+    <p>{{ result }}</p>
+    <a href="/">← 다시 조회하기</a>
 </body>
 </html>
