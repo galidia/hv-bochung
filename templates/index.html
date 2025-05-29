@@ -35,13 +35,32 @@
 					<section id="intro" class="wrapper style1 fullscreen fade-up">
 						<div class="inner">
 							<h1>Syntime</h1>
-							<p>Syntime(서준우, 이성준 팀)에 의해 디자인된 보충 시간표 제공자<a href="http://html5up.net">HTML5 UP</a><br />
-							시간을 위한 최고의 결정! <a href="http://html5up.net/license">Creative Commons</a>.</p>
-							<ul class="actions">
-								<li><a href="#one" class="button scrolly">검색</a></li>
-							</ul>
+							<p>
+								Syntime(서준우, 이성준 팀)에 의해 디자인된 보충 시간표 제공자
+								<a href="http://html5up.net">HTML5 UP</a><br />
+								시간을 위한 최고의 결정! <a href="http://html5up.net/license">Creative Commons</a>.
+							</p>
+
+		<!-- ✅ 학번 및 날짜 입력 폼 -->
+							<form method="POST" action="/result">
+								<div class="fields">
+									<div class="field">
+										<label for="student_id">학번:</label>
+										<input type="text" id="student_id" name="student_id" placeholder="예: 3310" required />
+									</div>
+									<div class="field">
+										<label for="date">날짜 (선택 안 하면 오늘 날짜):</label>
+										<input type="date" id="date" name="date" />
+									</div>
+								</div>
+
+								<ul class="actions">
+									<li><input type="submit" class="button primary" value="검색" /></li>
+								</ul>
+							</form>
 						</div>
 					</section>
+
 
 				<!-- One -->
 					<section id="one" class="wrapper style2 spotlights">
