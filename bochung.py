@@ -32,42 +32,52 @@ weekday_kor = {
     'Sunday': '일요일'
 }
 
-def get_timetable(student_id: str) -> str:
+def get_timetable(student_id: str, date_str: str = None) -> str:
     # 파일 경로 설정
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
     student_path = os.path.join(BASE_DIR, "private.json")
     schedule_path = os.path.join(BASE_DIR, "date.json")
 
-    # 파일 존재 여부 확인
     if not os.path.exists(student_path) or not os.path.exists(schedule_path):
         return "필요한 JSON 파일이 존재하지 않습니다."
 
-    # JSON 파일 불러오기
     with open(student_path, encoding="utf-8") as f:
         student_data = json.load(f)
-
     with open(schedule_path, encoding="utf-8") as f:
         schedule_data = json.load(f)
 
-    # 날짜 포맷 조정 (0 제거)
+    # ✅ 날짜 처리
     tz = pytz.timezone("Asia/Seoul")
-    now = datetime.now(tz)
-    weekday = weekday_kor[now.strftime('%A')]
-    month = now.strftime('%m').lstrip('0')
-    day = now.strftime('%d').lstrip('0')
-    today_str = f"{now.year}년 {month}월 {day}일 {weekday}"
+    if date_str:
+        try:
+            date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+        except ValueError:
+            return "날짜 형식이 잘못되었습니다."
+    else:
+        date_obj = datetime.now(tz)
 
-    # 학번 정보 가져오기
+    weekday = weekday_kor[date_obj.strftime('%A')]
+    month = date_obj.strftime('%m').lstrip('0')
+    day = date_obj.strftime('%d').lstrip('0')
+    today_str = f"{date_obj.year}년 {month}월 {day}일 {weekday}"
+
+    # ✅ 학번 처리 (4자리면 3학년 기준으로 보정)
+    student_id = student_id.strip()
+    if len(student_id) == 4:
+        student_id = '3' + student_id  # 3학년 기준 보정
+    elif len(student_id) != 5:
+        return "학번 형식이 잘못되었습니다. 4자리 또는 5자리 숫자여야 합니다."
+
+    # ✅ 학번 존재 여부 확인
     student = student_data.get(student_id)
     if not student:
-        return "해당 학번의 학생 정보를 찾을 수 없습니다."
+        return f"학번 {student_id}에 해당하는 학생 정보를 찾을 수 없습니다."
 
+    # ✅ 시간표 조회
     today_schedule = schedule_data.get(today_str)
     if not today_schedule:
         return f"{today_str}은(는) 보충 수업이 없습니다."
 
-    # 8, 9교시 분석
     result_list = []
     for period in ["8", "9"]:
         entry = next((item for item in today_schedule if item["교시"] == period), None)
@@ -82,7 +92,6 @@ def get_timetable(student_id: str) -> str:
         subject_short = subject_mapping.get(subject_full, subject_full)
         class_dict = entry.get("수업", {})
 
-        # 양쪽 모두 축약어 기반으로 비교
         matching_class = [
             cls for cls, subj in class_dict.items()
             if subject_mapping.get(subj, subj) == subject_short
@@ -92,6 +101,7 @@ def get_timetable(student_id: str) -> str:
             result_list.append(f"{period}교시는 {subject_short} {matching_class[0]}")
 
     return ", ".join(result_list) + "입니다." if result_list else "해당 교시에는 수업이 없습니다."
+
 
 
 # 실행부
