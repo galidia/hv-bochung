@@ -61,12 +61,15 @@ def get_timetable(student_id: str, date_str: str = None) -> str:
     day = date_obj.strftime('%d').lstrip('0')
     today_str = f"{date_obj.year}년 {month}월 {day}일 {weekday}"
 
-    # ✅ 학번 처리 (4자리면 3학년 기준으로 보정)
+    # ✅ 학번 처리 (4자리 입력 시 3학년 기준 5자리로 변환: 예 3823 → 30823)
     student_id = student_id.strip()
     if len(student_id) == 4:
-        student_id = '3' + student_id  # 3학년 기준 보정
+        grade_class = student_id[:2]   # 예: 38
+        number = student_id[2:]        # 예: 23
+        student_id = f"3{grade_class}{number}"
     elif len(student_id) != 5:
         return "학번 형식이 잘못되었습니다. 4자리 또는 5자리 숫자여야 합니다."
+
 
     # ✅ 학번 존재 여부 확인
     student = student_data.get(student_id)
